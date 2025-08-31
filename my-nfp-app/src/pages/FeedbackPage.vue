@@ -29,7 +29,7 @@
     </form>
 
     <!-- Feedback List -->
-    <h3>Feedback List (from Local Storage)</h3>
+    <h3>Feedback List</h3>
     <ul class="list-group">
       <li v-for="(item, index) in feedbackList" :key="index" class="list-group-item">
         <strong>{{ item.name }}</strong> ({{ item.email }}): {{ item.feedback }}
