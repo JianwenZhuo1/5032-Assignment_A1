@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-5" style="max-width: 500px;">
-    <h2 class="text-center mb-4">User Login</h2>
+    <h2 class="text-center mb-4">User Registration</h2>
 
-    <!-- Login Form -->
-    <form @submit.prevent="handleLogin">
+    <!-- Register Form -->
+    <form @submit.prevent="handleRegister">
       <!-- Email -->
       <div class="mb-3">
         <label class="form-label">Email</label>
@@ -30,35 +30,54 @@
         <div class="invalid-feedback">{{ errors.password }}</div>
       </div>
 
-      <!-- Login Button -->
-      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          v-model="form.confirmPassword"
+          class="form-control"
+          :class="{ 'is-invalid': errors.confirmPassword }"
+          required
+        />
+        <div class="invalid-feedback">{{ errors.confirmPassword }}</div>
+      </div>
+
+      <!-- Register Button -->
+      <button type="submit" class="btn btn-success w-100">Register</button>
     </form>
 
-    <!-- Switch to Register -->
+    <!-- Switch to Login -->
     <p class="mt-3 text-center">
-      Don't have an account?
-      <router-link to="/register">Register here</router-link>
+      Already have an account?
+      <router-link to="/login">Login here</router-link>
     </p>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
+import { useRouter } from "vue-router";  // import router
+
+const router = useRouter();
 
 const form = reactive({
   email: "",
   password: "",
+  confirmPassword: "",
 });
 
 const errors = reactive({
   email: "",
   password: "",
+  confirmPassword: "",
 });
 
-// Handle login validation
-const handleLogin = () => {
+// Handle register validation
+const handleRegister = () => {
   errors.email = "";
   errors.password = "";
+  errors.confirmPassword = "";
 
   // Email validation
   if (!form.email) {
@@ -76,8 +95,15 @@ const handleLogin = () => {
     errors.password = "Password must contain letters and numbers";
   }
 
-  if (!errors.email && !errors.password) {
-    alert("Login successful!");
+  // Confirm password validation
+  if (form.confirmPassword !== form.password) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+
+  // If all validations pass
+  if (!errors.email && !errors.password && !errors.confirmPassword) {
+    alert("Registration successful! Redirecting to login...");
+    router.push("/login");  // ✅ redirect to LoginPage
   }
 };
 </script>

@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage.vue'
 import SupportPage from '../pages/SupportPage.vue'
 import FeedbackPage from '../pages/FeedbackPage.vue'
 import LoginPage from '../pages/LoginPage.vue'
+import RegisterPage from '../pages/RegisterPage.vue'
 
 // Import resource pages
 import ManagingAnxiety from '../pages/ManagingAnxiety.vue'
@@ -17,6 +18,7 @@ const routes = [
   { path: '/support', component: SupportPage },
   { path: '/feedback', component: FeedbackPage },
   { path: '/login', component: LoginPage },
+  { path: '/register', component: RegisterPage },
 
   // Resources
   { path: '/resources/anxiety', component: ManagingAnxiety },
