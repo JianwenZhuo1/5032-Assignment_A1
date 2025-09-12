@@ -1,24 +1,9 @@
 <template>
   <div class="container-fluid p-0">
-    <!-- Navbar -->
+    <!-- Navbar (clean, no brand or links) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">NFP Mental Health</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li v-for="link in navLinks" :key="link" class="nav-item">
-              <a class="nav-link" href="#">{{ link }}</a>
-            </li>
-          </ul>
-        </div>
+        <!-- Removed brand and nav links -->
       </div>
     </nav>
 
@@ -32,7 +17,6 @@
         Get Help Now
       </router-link>
     </div>
-
 
     <!-- Fixed Row of Resources -->
     <div class="resource-row">
@@ -55,32 +39,15 @@
       </div>
     </div>
 
-
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3 mt-5">
-      <p>&copy; 2025 Youth Mental Health NFP | Contact us: ...@...</p>
+      <p>&copy; 2025 Youth Mental Health NFP | Contact us: jzhu0115@student.monash.edu</p>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-// Navigation links
-const navLinks = [
-  "About Us",
-  "Resources",
-  "Support",
-  "Get Involved",
-  "Contact",
-];
-
-// Fixed resource cards
-const resources = ref([
-  { id: 1, title: "Managing Anxiety", type: "Article" },
-  { id: 2, title: "Stress Relief Techniques", type: "Video" },
-  { id: 3, title: "Youth Wellbeing Guide", type: "Guide" },
-]);
+// No navbar links needed anymore
 </script>
 
 <style>
