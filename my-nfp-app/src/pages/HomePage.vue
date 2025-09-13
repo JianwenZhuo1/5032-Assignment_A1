@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid p-0">
-    <!-- Navbar (clean, no brand or links) -->
+    <!-- Navbar  -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <!-- Removed brand and nav links -->

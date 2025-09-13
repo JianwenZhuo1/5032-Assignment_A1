@@ -43,6 +43,15 @@
         <div class="invalid-feedback">{{ errors.confirmPassword }}</div>
       </div>
 
+      <!-- Role Selection -->
+      <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select v-model="form.role" class="form-control">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
       <!-- Register Button -->
       <button type="submit" class="btn btn-success w-100">Register</button>
     </form>
@@ -57,7 +66,7 @@
 
 <script setup>
 import { reactive } from "vue";
-import { useRouter } from "vue-router";  // import router
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -65,6 +74,7 @@ const form = reactive({
   email: "",
   password: "",
   confirmPassword: "",
+  role: "user",
 });
 
 const errors = reactive({
@@ -73,7 +83,6 @@ const errors = reactive({
   confirmPassword: "",
 });
 
-// Handle register validation
 const handleRegister = () => {
   errors.email = "";
   errors.password = "";
@@ -100,10 +109,26 @@ const handleRegister = () => {
     errors.confirmPassword = "Passwords do not match";
   }
 
-  // If all validations pass
   if (!errors.email && !errors.password && !errors.confirmPassword) {
+    // Load existing users
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if email already exists
+    if (users.some((u) => u.email === form.email)) {
+      alert("Email already registered!");
+      return;
+    }
+
+    // Save new user
+    users.push({
+      email: form.email,
+      password: form.password,
+      role: form.role,
+    });
+    localStorage.setItem("users", JSON.stringify(users));
+
     alert("Registration successful! Redirecting to login...");
-    router.push("/login");  // ✅ redirect to LoginPage
+    router.push("/login");
   }
 };
 </script>

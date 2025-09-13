@@ -44,6 +44,9 @@
 
 <script setup>
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const form = reactive({
   email: "",
@@ -55,29 +58,44 @@ const errors = reactive({
   password: "",
 });
 
-// Handle login validation
 const handleLogin = () => {
   errors.email = "";
   errors.password = "";
 
-  // Email validation
+  // Validate email
   if (!form.email) {
     errors.email = "Email is required";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
     errors.email = "Invalid email format";
   }
 
-  // Password validation
+  // Validate password
   if (!form.password) {
     errors.password = "Password is required";
-  } else if (form.password.length < 8) {
-    errors.password = "Password must be at least 8 characters long";
-  } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(form.password)) {
-    errors.password = "Password must contain letters and numbers";
   }
 
   if (!errors.email && !errors.password) {
-    alert("Login successful!");
+    // Load all registered users from Local Storage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Try to find matching user
+    const user = users.find(
+      (u) => u.email === form.email && u.password === form.password
+    );
+
+    if (!user) {
+      alert("Invalid email or password");
+      return;
+    }
+
+    // Save logged-in user to Local Storage as current session
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    alert(`Login successful! Role: ${user.role}`);
+
+    // After login, always redirect to home (not directly to admin)
+    router.push("/home");
   }
 };
 </script>
+
