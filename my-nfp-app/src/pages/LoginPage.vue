@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+import { sanitizeInput } from "../utils/sanitize.js";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
@@ -62,25 +63,29 @@ const handleLogin = () => {
   errors.email = "";
   errors.password = "";
 
-  // Validate email
-  if (!form.email) {
+  //  Sanitize input before use
+  const email = sanitizeInput(form.email);
+  const password = sanitizeInput(form.password);
+
+  //  Validate email
+  if (!email) {
     errors.email = "Email is required";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = "Invalid email format";
   }
 
-  // Validate password
-  if (!form.password) {
+  //  Validate password
+  if (!password) {
     errors.password = "Password is required";
   }
 
   if (!errors.email && !errors.password) {
-    // Load all registered users from Local Storage
+    //  Load registered users
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Try to find matching user
+    //  Match with sanitized input
     const user = users.find(
-      (u) => u.email === form.email && u.password === form.password
+      (u) => u.email === email && u.password === password
     );
 
     if (!user) {
@@ -88,14 +93,18 @@ const handleLogin = () => {
       return;
     }
 
-    // Save logged-in user to Local Storage as current session
+    //  Save current user session
     localStorage.setItem("currentUser", JSON.stringify(user));
 
     alert(`Login successful! Role: ${user.role}`);
 
-    // After login, always redirect to home (not directly to admin)
+    // Notify navbar to refresh admin visibility immediately
+    window.dispatchEvent(new Event("user-logged-in"));
+
+    //  Redirect to home (not directly to admin)
     router.push("/home");
   }
 };
 </script>
+
 

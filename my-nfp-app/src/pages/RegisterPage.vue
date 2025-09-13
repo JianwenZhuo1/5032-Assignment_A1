@@ -65,6 +65,7 @@
 </template>
 
 <script setup>
+import { sanitizeInput } from "../utils/sanitize.js";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
@@ -88,24 +89,29 @@ const handleRegister = () => {
   errors.password = "";
   errors.confirmPassword = "";
 
+  // Sanitize all input before use
+  const email = sanitizeInput(form.email);
+  const password = sanitizeInput(form.password);
+  const confirmPassword = sanitizeInput(form.confirmPassword);
+
   // Email validation
-  if (!form.email) {
+  if (!email) {
     errors.email = "Email is required";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = "Invalid email format";
   }
 
   // Password validation
-  if (!form.password) {
+  if (!password) {
     errors.password = "Password is required";
-  } else if (form.password.length < 8) {
+  } else if (password.length < 8) {
     errors.password = "Password must be at least 8 characters long";
-  } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(form.password)) {
+  } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(password)) {
     errors.password = "Password must contain letters and numbers";
   }
 
   // Confirm password validation
-  if (form.confirmPassword !== form.password) {
+  if (confirmPassword !== password) {
     errors.confirmPassword = "Passwords do not match";
   }
 
@@ -114,15 +120,15 @@ const handleRegister = () => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     // Check if email already exists
-    if (users.some((u) => u.email === form.email)) {
+    if (users.some((u) => u.email === email)) {
       alert("Email already registered!");
       return;
     }
 
-    // Save new user
+    // Save new user (sanitized values only)
     users.push({
-      email: form.email,
-      password: form.password,
+      email,
+      password,
       role: form.role,
     });
     localStorage.setItem("users", JSON.stringify(users));
@@ -131,4 +137,5 @@ const handleRegister = () => {
     router.push("/login");
   }
 };
+
 </script>

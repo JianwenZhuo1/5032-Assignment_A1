@@ -16,7 +16,6 @@
         <li>📞 Crisis Helpline</li>
         <li>🗺️ Service Finder Map</li>
         <li>🤖 FAQ Chatbot</li>
-        <li>⭐ User Rating</li>
       </ul>
     </div>
 
