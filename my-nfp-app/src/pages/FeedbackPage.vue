@@ -82,7 +82,7 @@
 
 <script setup>
 import { reactive, ref, onMounted, computed } from "vue";
-import { sanitizeInput } from "../utils/sanitize.js"; // ✅ Import sanitize
+import { sanitizeInput } from "../utils/sanitize.js"; 
 
 const form = reactive({
   name: "",
@@ -103,7 +103,7 @@ const selected = ref(0);
 const feedbackKey = "feedbacks";
 const ratingKey = "ratings_feedback";
 
-// ✅ Load and normalize data when page loads
+// Load and normalize data when page loads
 onMounted(() => {
   feedbackList.value = JSON.parse(localStorage.getItem(feedbackKey)) || [];
 
@@ -121,7 +121,7 @@ onMounted(() => {
   localStorage.setItem(ratingKey, JSON.stringify(ratings.value));
 });
 
-// ✅ Handle feedback form submission
+// Handle feedback form submission
 const handleSubmit = () => {
   errors.name = "";
   errors.email = "";
@@ -157,7 +157,7 @@ const handleSubmit = () => {
   }
 };
 
-// ✅ Add rating (only once per user)
+// Add rating (only once per user)
 const setRating = (value) => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -182,7 +182,7 @@ const setRating = (value) => {
   alert(`Thanks for rating ${value} ★`);
 };
 
-// ✅ Compute average rating (safe for old + new format)
+// Compute average rating (safe for old + new format)
 const average = computed(() => {
   if (ratings.value.length === 0) return 0;
   const sum = ratings.value.reduce((a, b) => {
